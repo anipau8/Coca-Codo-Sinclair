@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La hidroeléctrica Coca Codo Sinclair - Proyecto STEAM & Biología</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- ENCABEZADO VIBRANTE -->
+  <header class="hero-header">
+    <div class="header-overlay">
+      <span class="badge">PROYECTO INTERDISCIPLINARIO STEAM - 3RO BGU</span>
+      <h1>La hidroeléctrica Coca Codo Sinclair ⚡🌊</h1>
+      <p>Explora cómo se genera la energía hidroeléctrica, interactúa con sus componentes reales y analiza su impacto ecológico en el Ecuador.</p>
+    </div>
+  </header>
+
+  <!-- NAVEGACIÓN DE BOTONES INTERACTIVOS -->
+  <nav class="main-nav">
+    <button class="nav-tab active" onclick="switchTab('tab-mecanismos', this)">
+      <span class="icon">💧</span> 1. ¿Cómo se Genera Energía?
+    </button>
+    <button class="nav-tab" onclick="switchTab('tab-escenario', this)">
+      <span class="icon">⛰️</span> 2. Escenario Interactivo Coca Codo
+    </button>
+    <button class="nav-tab" onclick="switchTab('tab-simulador', this)">
+      <span class="icon">📊</span> 3. Simulador de Impacto Biológico
+    </button>
+  </nav>
+
+  <main class="main-container">
+
+    <!-- ================= SECCIÓN 1: MECANISMOS INTERACTIVOS ================= -->
+    <section id="tab-mecanismos" class="content-section active">
+      <div class="section-title">
+        <h2>Transformación de Energía: Agua, Aire y Luz</h2>
+        <p>Haz clic en los botones de abajo para cambiar de recurso natural y mueve las palancas para ver el movimiento en tiempo real.</p>
+      </div>
+
+      <!-- Selector de Tipo de Energía -->
+      <div class="resource-cards">
+        <div class="resource-card active" onclick="selectMechanism('agua', this)">
+          <div class="res-icon">💧</div>
+          <h3>Agua (Hidroeléctrica)</h3>
+          <span class="tag">Ríos Quijos y Salado</span>
+        </div>
+        <div class="resource-card" onclick="selectMechanism('aire', this)">
+          <div class="res-icon">💨</div>
+          <h3>Aire (Eólica)</h3>
+          <span class="tag">Villonaco / Loja</span>
+        </div>
+        <div class="resource-card" onclick="selectMechanism('luz', this)">
+          <div class="res-icon">☀️</div>
+          <h3>Luz (Solar)</h3>
+          <span class="tag">Galápagos / Costa</span>
+        </div>
+      </div>
+
+      <!-- Lienzo Mecánico Interactivo -->
+      <div class="canvas-card">
+        <div class="card-header">
+          <h3 id="mechTitle">Mecanismo Hidroeléctrico: Turbinas Pelton</h3>
+          <button class="btn-info" onclick="openModal('modalMecanismo')">🔍 Ver Detalle Biológico y Físico</button>
+        </div>
+        
+        <div class="canvas-wrapper">
+          <canvas id="canvasMech" width="800" height="380"></canvas>
+        </div>
+
+        <div class="control-bar">
+          <label for="mechControl"><strong>Intensidad del Recurso:</strong></label>
+          <input type="range" id="mechControl" min="0" max="100" value="40" oninput="changeMechSpeed(this.value)">
+          <span id="mechSpeedVal" class="badge-val">40% Caudal</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 2: ESCENARIO REAL COCA CODO SINCLAIR ================= -->
+    <section id="tab-escenario" class="content-section">
+      <div class="section-title">
+        <h2>Simulación Viva: Central Coca Codo Sinclair</h2>
+        <p>Interactúa con los elementos de la maqueta virtual. Haz clic en las partes de la central para explorar detalles.</p>
+      </div>
+
+      <!-- Botones de Puntos de Interés Interactivos -->
+      <div class="interactive-poi">
+        <button class="poi-btn" onclick="highlightPOI('captacion')">📍 Obras de Captación</button>
+        <button class="poi-btn" onclick="highlightPOI('tunel')">📍 Túnel (24.83 km)</button>
+        <button class="poi-btn" onclick="highlightPOI('maquinas')">📍 Casa de Máquinas (8 Pelton)</button>
+        <button class="poi-btn" onclick="highlightPOI('poblado')">📍 Ciudad / Red Eléctrica</button>
+      </div>
+
+      <!-- Lienzo Principal del Escenario Vivo -->
+      <div class="canvas-card">
+        <div class="canvas-wrapper">
+          <canvas id="canvasScen" width="850" height="420"></canvas>
+        </div>
+
+        <!-- Tablero de Estado en Tiempo Real -->
+        <div class="live-dashboard">
+          <div class="dash-card">
+            <span>Caudal Río Coca</span>
+            <strong id="dashCaudal">Óptimo (100%)</strong>
+          </div>
+          <div class="dash-card">
+            <span>Potencia Generada</span>
+            <strong id="dashMW" class="highlight-cyan">1500 MW</strong>
+          </div>
+          <div class="dash-card">
+            <span>Estado del Poblado</span>
+            <strong id="dashCity">Totalmente Iluminado 💡</strong>
+          </div>
+        </div>
+
+        <div class="control-bar">
+          <label for="scenControl"><strong>Variar Caudal del Río Coca:</strong></label>
+          <input type="range" id="scenControl" min="0" max="100" value="80" oninput="changeScenFlow(this.value)">
+          <span id="scenFlowVal" class="badge-val">80% Alto</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 3: SIMULADOR DE IMPACTO BIOLÓGICO ================= -->
+    <section id="tab-simulador" class="content-section">
+      <div class="section-title">
+        <h2>Simulador Interdisciplinario: Generación vs. Biología</h2>
+        <p>Configura los parámetros del proyecto para calcular la energía en kWh y analizar los efectos en la biodiversidad ecuatoriana.</p>
+      </div>
+
+      <div class="sim-grid">
+        <!-- Panel de Opciones -->
+        <div class="sim-controls-card">
+          <h3>⚙️ Parámetros del Proyecto</h3>
+
+          <div class="field-group">
+            <label>Tipo de Planta Energética:</label>
+            <select id="simTipo" onchange="calculateImpact()">
+              <option value="hidro">Hidroeléctrica (Coca Codo Sinclair - Ríos Amazónicos)</option>
+              <option value="eolica">Eólica (Cerro Villonaco - Loja)</option>
+              <option value="solar">Solar Fotovoltaica (Galápagos)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Región del Ecuador:</label>
+            <select id="simRegion" onchange="calculateImpact()">
+              <option value="amazonia">Amazonía (Napo / Sucumbíos)</option>
+              <option value="sierra">Sierra (Loja / Azuay)</option>
+              <option value="costa">Costa (Guayas / Manabí)</option>
+              <option value="galapagos">Insular (Galápagos)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Área Intervenida (Hectáreas):</label>
+            <input type="range" id="simArea" min="10" max="500" value="200" oninput="calculateImpact()">
+            <span id="areaVal" class="badge-val">200 ha</span>
+          </div>
+
+          <div class="field-group">
+            <label>Sucesión Ecológica Secundaria (Años de abandono de obra):</label>
+            <select id="simAbandono" onchange="calculateImpact()">
+              <option value="0">En Operación Activa (Perturbación continua)</option>
+              <option value="5">5 Años de Abandono (Etapa Pionera / Herbáceas)</option>
+              <option value="20">20 Años de Abandono (Etapa Intermedia / Arbustos)</option>
+              <option value="50">50 Años de Abandono (Bosque Secundario Clímax)</option>
+            </select>
+          </div>
+
+          <button class="btn-action" onclick="triggerCelebration()">🎉 Validar Proyecto Responsable</button>
+        </div>
+
+        <!-- Panel de Resultados Biológicos -->
+        <div class="sim-results-card">
+          <h3>📈 Diagnóstico Biológico & Energético</h3>
+
+          <div class="stats-row">
+            <div class="stat-box">
+              <span class="stat-title">Energía Producida</span>
+              <strong id="resKwh">0 kWh</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title">Hábitat Alterado</span>
+              <strong id="resHabitat">0 ha</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title">Índice Shannon (H')</span>
+              <strong id="resShannon">0.0</strong>
+            </div>
+          </div>
+
+          <div class="details-box">
+            <h4>🐾 Especies en Riesgo en la Zona:</h4>
+            <ul id="speciesList" class="species-chips">
+              <!-- Cargado dinámicamente -->
+            </ul>
+
+            <h4 style="margin-top: 15px;">🌱 Estado de la Sucesión Ecológica:</h4>
+            <div id="succNotice" class="succ-notice">
+              <!-- Descripción -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL FLOTANTE INTERACTIVO PARA EXPLICACIONES -->
+  <div id="infoModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModalForce()">&times;</button>
+      <h3 id="modalTitle">Título del Componente</h3>
+      <div id="modalBody">
+        <!-- Contenido dinámico -->
+      </div>
+      <button class="btn-action" onclick="closeModalForce()" style="margin-top: 15px;">Entendido / Regresar</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Proyecto Interdisciplinario STEAM y Biología - 3er Año BGU | La hidroeléctrica Coca Codo Sinclair</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
